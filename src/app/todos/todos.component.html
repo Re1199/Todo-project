@@ -1,0 +1,31 @@
+<div class="todos">
+  <ul class="notcompleted">
+    <li *ngFor="let todo of todosService.filteredTodosUndone() let i = index"
+        [class.completed]="todo.completed"
+        [class.notcompleted]="!todo.completed">
+      <span [class.done]="todo.completed">
+      <input (change)="onChange(todo.id)" [checked]="todo.completed" type="checkbox">
+        {{ todo.title }}
+      </span>
+      <div class="actions">
+        <button (click)="updateTodo(todo.id)" class="update">Change</button>
+        <button (click)="removeTodo(todo.id)" class="rm">&times;</button>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="completed">
+    <li *ngFor="let todo of todosService.filteredTodosDone() let i = index"
+        [class.completed]="todo.completed"
+        [class.notcompleted]="!todo.completed">
+      <span [class.done]="todo.completed">
+      <input (change)="onChange(todo.id)" [checked]="todo.completed" type="checkbox">
+        {{ todo.title }}
+      </span>
+      <div class="actions">
+        <button (click)="updateTodo(todo.id)" class="update">Change</button>
+        <button (click)="removeTodo(todo.id)" class="rm">&times;</button>
+      </div>
+    </li>
+  </ul>
+</div>

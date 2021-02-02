@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'todos-project';
+  appTitle = 'Test todos page';
 }
