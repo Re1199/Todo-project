@@ -1,19 +1,19 @@
-<div *ngIf="!changing">
+<div *ngIf="!changing" class="add-form">
   <input
     type="text"
-    placeholder="Add todo title..."
+    placeholder="Add new title"
     [(ngModel)]="title"
     (keydown.enter)="addTodo()"
   >
-  <button (click)="addTodo()">Add</button>
+  <button (click)="addTodo()" id="add-btn">Add</button>
 </div>
 
-<div *ngIf="changing">
+<div *ngIf="changing" class="update-form">
   <input
     type="text"
     placeholder="Add todo title..."
     [(ngModel)]="title"
     (keydown.enter)="updateTodo()"
   >
-  <button (click)="updateTodo()">Save</button>
+  <button (click)="updateTodo()" id="save-btn">Save</button>
 </div>

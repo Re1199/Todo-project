@@ -17,8 +17,23 @@ export class TodosService {
   constructor(private http: HttpClient) {}
 
   fetchTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      .pipe(tap(todos => this.todos = todos));
+    return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
+      .pipe(tap(todos => {
+        this.todos = this.getRandom(todos, 10);
+        console.log(this.todos);
+      }));
+  }
+
+  private getRandom(arr: Todo[], n: number): Array<Todo> {
+    const result = new Array(n);
+    let len = arr.length;
+    const taken = new Array(len);
+    while (n--) {
+      const x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len;
+    }
+    return result;
   }
 
   onToggle(id: number): void {
@@ -35,15 +50,19 @@ export class TodosService {
   }
 
   filteredTodosDone(): Todo[] {
-    return this.todos.filter(todo => {
-      return todo.completed;
-    });
+    return this.todos
+      .filter(todo => {
+        return todo.completed;
+      }
+    );
   }
 
   filteredTodosUndone(): Todo[] {
-    return this.todos.filter(todo => {
-      return !todo.completed;
-    });
+    return this.todos
+      .filter(todo => {
+        return !todo.completed;
+      })
+      .sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
   }
 
   updateTodo(id: number): void {
