@@ -9,15 +9,13 @@ import {delay} from 'rxjs/operators';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
-  private loading = true;
+  loading = true;
 
   constructor(public todosService: TodosService) { }
 
-  // @Output() toggle = new EventEmitter<number>();
-
   ngOnInit(): void {
     this.todosService.fetchTodos()
-      .pipe(delay(500))
+      .pipe(delay(200))
       .subscribe(() => {
         this.loading = false;
       })
@@ -33,7 +31,6 @@ export class TodosComponent implements OnInit {
   }
 
   updateTodo(id: number): void {
-    const newTitle = 'fnv';
-    this.todosService.updateTodo(id, newTitle);
+    this.todosService.updateTodo(id);
   }
 }

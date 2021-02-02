@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!changing">
   <input
     type="text"
     placeholder="Add todo title..."
@@ -6,4 +6,14 @@
     (keydown.enter)="addTodo()"
   >
   <button (click)="addTodo()">Add</button>
+</div>
+
+<div *ngIf="changing">
+  <input
+    type="text"
+    placeholder="Add todo title..."
+    [(ngModel)]="title"
+    (keydown.enter)="updateTodo()"
+  >
+  <button (click)="updateTodo()">Save</button>
 </div>

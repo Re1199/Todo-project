@@ -56,6 +56,11 @@ ul {
   &:hover {
     background: darken(#1d49aa, 20%);
   }
+
+  &:active {
+    background: darken(#1d49aa, 50%);
+    font-weight: bold;
+  }
 }
 
 .rm {
@@ -76,6 +81,10 @@ ul {
 
   &:hover {
     background: darken($color, 20%);
+  }
+
+  &:active {
+    background: darken($color, 50%);
   }
 }
 

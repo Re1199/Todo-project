@@ -11,8 +11,8 @@ export interface Todo {
 
 @Injectable({providedIn: 'root'})
 export class TodosService {
-  public todos: Todo[] = [];
-  // public todosCompleted: Todo[] = [];
+  todos: Todo[] = [];
+  updatingId = -1;
 
   constructor(private http: HttpClient) {}
 
@@ -46,8 +46,23 @@ export class TodosService {
     });
   }
 
-  updateTodo(id: number, newTitle: string): void {
-    const i = this.todos.findIndex(t => t.id === id);
+  updateTodo(id: number): void {
+    this.updatingId = this.todos.findIndex(t => t.id === id);
+  }
+
+  setUpdId(): void {
+    this.updatingId = -1;
+  }
+
+  getTitle(): string {
+    if (this.updatingId !== -1) {
+      return this.todos[this.updatingId].title;
+    } else {
+      return '';
+    }
+  }
+
+  changeTitle(i: number, newTitle: string): void {
     this.todos[i].title = newTitle;
   }
 }

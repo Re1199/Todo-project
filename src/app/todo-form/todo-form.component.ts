@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, AfterContentChecked, } from '@angular/core';
 import {Todo, TodosService} from '../services/todos.service';
 
 @Component({
@@ -6,13 +6,24 @@ import {Todo, TodosService} from '../services/todos.service';
   templateUrl: './todo-form.component.html',
   styleUrls: ['./todo-form.component.scss']
 })
-export class TodoFormComponent implements OnInit {
-
+export class TodoFormComponent implements OnInit, DoCheck {
+  changing = false;
   title = '';
+  updId = -1;
 
-  constructor(private todosService: TodosService) { }
+  constructor(private todosService: TodosService) {
+  }
 
   ngOnInit(): void {
+  }
+
+  ngDoCheck(): void {
+    if (this.todosService.updatingId !== -1) {
+      this.changing = true;
+      this.title = this.todosService.getTitle();
+      this.updId = this.todosService.updatingId;
+      this.todosService.setUpdId();
+    }
   }
 
   addTodo(): void {
@@ -28,7 +39,9 @@ export class TodoFormComponent implements OnInit {
     }
   }
 
-  updateTodo(currentTitle: string): void {
+  updateTodo(): void {
+    this.todosService.changeTitle(this.updId, this.title.trim());
     this.title = '';
+    this.changing = false;
   }
 }
