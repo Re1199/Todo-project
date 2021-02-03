@@ -10,6 +10,7 @@ export class TodoFormComponent implements OnInit, DoCheck {
   changing = false;
   title = '';
   updId = -1;
+  private lastId = 200;
 
   constructor(private todosService: TodosService) {
   }
@@ -20,7 +21,7 @@ export class TodoFormComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     if (this.todosService.updatingId !== -1) {
       this.changing = true;
-      this.title = this.todosService.getTitle();
+      this.title = this.todosService.getUpdateTitle();
       this.updId = this.todosService.updatingId;
       this.todosService.setUpdId();
     }
@@ -30,10 +31,11 @@ export class TodoFormComponent implements OnInit, DoCheck {
     if (this.title !== '') {
       const todo: Todo = {
         title: this.title,
-        id: Date.now(),
+        // id: Date.now(),
+        id: this.lastId,
         completed: false
       };
-
+      this.lastId++;
       this.todosService.addTodo(todo);
       this.title = '';
     }

@@ -10,7 +10,7 @@
             [class.notcompleted]="!todo.completed">
           <div class="info">
             <label class="checkbox-other">
-              <input (change)="onChange(todo.id)" [checked]="todo.completed" type="checkbox">
+              <input (change)="onChangeCheckbox(todo.id)" [checked]="todo.completed" type="checkbox">
               <span [class.done]="todo.completed">{{ todo.title }}</span>
             </label>
           </div>
@@ -32,7 +32,7 @@
             [class.notcompleted]="!todo.completed">
           <div class="info">
             <label class="checkbox-other">
-              <input (change)="onChange(todo.id)" [checked]="todo.completed" type="checkbox">
+              <input (change)="onChangeCheckbox(todo.id)" [checked]="todo.completed" type="checkbox">
               <span [class.done]="todo.completed">{{ todo.title }}</span>
             </label>
           </div>

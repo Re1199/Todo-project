@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {delay, tap} from 'rxjs/operators';
 
 export interface Todo {
   id: number;
@@ -16,12 +16,41 @@ export class TodosService {
 
   constructor(private http: HttpClient) {}
 
-  fetchTodos(): Observable<Todo[]> {
+  getTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
       .pipe(tap(todos => {
         this.todos = this.getRandom(todos, 10);
-        console.log(this.todos);
       }));
+  }
+
+  postTodo(todo: Todo): Observable<object> {
+    const body = {
+      userId: null,
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed
+    };
+    const header = new HttpHeaders({ 'Content-type': 'application/json; charset=UTF-8' });
+    const options = { headers: header };
+    return this.http.post('https://jsonplaceholder.typicode.com/todos', body, options);
+  }
+
+  putTodo(todo: Todo): Observable<object> {
+    const body = {
+      userId: null,
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed
+    };
+    const header = new HttpHeaders({'Content-type': 'application/json; charset=UTF-8'});
+    const options = { headers: header };
+    return this.http.put(`https://jsonplaceholder.typicode.com/todos/${todo.id}`, body, options);
+  }
+
+  deleteTodo(id: number): Observable<object> {
+    const header = new HttpHeaders({ 'Content-type': 'application/json; charset=UTF-8' });
+    const options = { headers: header };
+    return this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`, options);
   }
 
   private getRandom(arr: Todo[], n: number): Array<Todo> {
@@ -43,10 +72,16 @@ export class TodosService {
 
   removeTodo(id: number): void {
     this.todos = this.todos.filter(t => t.id !== id);
+    this.deleteTodo(id)
+      .subscribe(error => console.error(error))
+    ;
   }
 
   addTodo(todo: Todo): void {
-    this.todos.push(todo);
+    this.postTodo(todo)
+      .subscribe(error => console.error(error))
+    ;
+    this.todos.push(todo); // to see changes on page
   }
 
   filteredTodosDone(): Todo[] {
@@ -73,7 +108,7 @@ export class TodosService {
     this.updatingId = -1;
   }
 
-  getTitle(): string {
+  getUpdateTitle(): string {
     if (this.updatingId !== -1) {
       return this.todos[this.updatingId].title;
     } else {
@@ -82,6 +117,9 @@ export class TodosService {
   }
 
   changeTitle(i: number, newTitle: string): void {
-    this.todos[i].title = newTitle;
+    this.todos[i].title = newTitle; // to see changes on page
+    this.putTodo(this.todos[i])
+      .subscribe(error => console.error(error))
+    ;
   }
 }

@@ -68,13 +68,14 @@ ul {
   border: none;
   height: 23px;
   cursor: pointer;
+  outline: none;
 
   &:hover {
-    background: darken(#1d49aa, 20%);
+    background: dodgerblue;
   }
 
   &:active {
-    background: darken(#1d49aa, 50%);
+    background: lightskyblue;
     font-weight: bold;
   }
 }

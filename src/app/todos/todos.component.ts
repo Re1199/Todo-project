@@ -14,15 +14,15 @@ export class TodosComponent implements OnInit {
   constructor(public todosService: TodosService) { }
 
   ngOnInit(): void {
-    this.todosService.fetchTodos()
+    this.todosService.getTodos()
       .pipe(delay(200))
       .subscribe(() => {
         this.loading = false;
-      })
+      }, error => console.error(error))
     ;
   }
 
-  onChange(id: number): void {
+  onChangeCheckbox(id: number): void {
     this.todosService.onToggle(id);
   }
 
