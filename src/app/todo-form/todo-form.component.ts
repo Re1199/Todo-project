@@ -42,8 +42,10 @@ export class TodoFormComponent implements OnInit, DoCheck {
   }
 
   updateTodo(): void {
-    this.todosService.changeTitle(this.updId, this.title.trim());
-    this.title = '';
+    if (this.title !== '') {
+      this.todosService.changeTitle(this.updId, this.title.trim());
+      this.title = '';
+    }
     this.changing = false;
   }
 }

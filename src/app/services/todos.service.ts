@@ -68,6 +68,13 @@ export class TodosService {
   onToggle(id: number): void {
     const i = this.todos.findIndex(t => t.id === id);
     this.todos[i].completed = !this.todos[i].completed;
+    this.putTodo(this.todos[i])
+      .subscribe(
+        data => {
+          // console.log(data);
+        },
+        error => console.error(`Server returned code ${error.status}, ` +
+          `body was: ${error.error}`));
   }
 
   removeTodo(id: number): void {
