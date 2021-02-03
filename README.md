@@ -23,7 +23,7 @@ The same for completed todo to change state on not completed.
 
 Click on __"x"__ button to remove selected todo.
 
-## Change todo's title
+### Change todo's title
 
  - Click on __"Change"__ button of selected todo
  - In the form update the title
