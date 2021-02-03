@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {delay, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 export interface Todo {
   id: number;
@@ -30,8 +30,8 @@ export class TodosService {
       title: todo.title,
       completed: todo.completed
     };
-    const header = new HttpHeaders({ 'Content-type': 'application/json; charset=UTF-8' });
-    const options = { headers: header };
+    const header = new HttpHeaders({'Content-type': 'application/json; charset=UTF-8'});
+    const options = {headers: header};
     return this.http.post('https://jsonplaceholder.typicode.com/todos', body, options);
   }
 
@@ -43,13 +43,13 @@ export class TodosService {
       completed: todo.completed
     };
     const header = new HttpHeaders({'Content-type': 'application/json; charset=UTF-8'});
-    const options = { headers: header };
+    const options = {headers: header};
     return this.http.put(`https://jsonplaceholder.typicode.com/todos/${todo.id}`, body, options);
   }
 
   deleteTodo(id: number): Observable<object> {
-    const header = new HttpHeaders({ 'Content-type': 'application/json; charset=UTF-8' });
-    const options = { headers: header };
+    const header = new HttpHeaders({'Content-type': 'application/json; charset=UTF-8'});
+    const options = {headers: header};
     return this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`, options);
   }
 
@@ -71,16 +71,22 @@ export class TodosService {
   }
 
   removeTodo(id: number): void {
-    this.todos = this.todos.filter(t => t.id !== id);
+    this.todos = this.todos.filter(t => t.id !== id); // to see changes on page
     this.deleteTodo(id)
-      .subscribe(error => console.error(error))
+      .subscribe(data => {
+          // this.todos = this.todos.filter(t => t.id !== id);
+        },
+        error => console.error(`Server returned code ${error.status}, ` +
+          `body was: ${error.error}`))
     ;
   }
 
   addTodo(todo: Todo): void {
     this.postTodo(todo)
-      .subscribe(error => console.error(error))
-    ;
+      .subscribe(
+        data => console.log(data),
+        error => console.error(`Server returned code ${error.status}, ` +
+          `body was: ${error.error}`));
     this.todos.push(todo); // to see changes on page
   }
 
@@ -88,8 +94,7 @@ export class TodosService {
     return this.todos
       .filter(todo => {
         return todo.completed;
-      }
-    );
+      });
   }
 
   filteredTodosUndone(): Todo[] {
@@ -119,7 +124,11 @@ export class TodosService {
   changeTitle(i: number, newTitle: string): void {
     this.todos[i].title = newTitle; // to see changes on page
     this.putTodo(this.todos[i])
-      .subscribe(error => console.error(error))
-    ;
+      .subscribe(
+        data => {
+          // console.log(data);
+        },
+        error => console.error(`Server returned code ${error.status}, ` +
+          `body was: ${error.error}`));
   }
 }
